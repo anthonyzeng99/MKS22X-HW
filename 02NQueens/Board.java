@@ -14,22 +14,22 @@ public class Board {
 
 
     public boolean addQueen(int row, int col) {
-	if (gameBoard[row][col] != 0) {
+	if ( gameBoard[row][col] != 0 ) {
 	    return false;
 	}
 	int nextCol = 1;
-	gameBoard[row][col] = 1;
-	while ((nextCol + col) < gameBoard[0].length) {
-	     gameBoard[row][col + nextCol]--;
-	    if ((col + nextCol) < gameBoard[0].length) {
-		gameBoard[row + nextCol][col + nextCol]--;
-	    }
-	    if ((col - nextCol) >= 0) {
-		gameBoard[row - nextCol][col + nextCol]--;
-	    }
-	    nextCol++;
-	}
-	return true;	
+        gameBoard[row][col] = 1;
+        while ((nextCol + col) < gameBoard[row].length) {
+            gameBoard[row][col + nextCol]--;
+            if ((row + nextCol) < gameBoard.length) {
+                gameBoard[row + nextCol][col + nextCol]--;
+            }
+            if ((row - nextCol) >= 0) {
+                gameBoard[row - nextCol][col + nextCol]--;
+            }
+            nextCol++;
+        }
+	return true;
     }
 
     public boolean removeQueen(int row, int col) {
@@ -38,12 +38,12 @@ public class Board {
 	}
 	int nextCol = 1;
         gameBoard[row][col] = 0;
-        while ((nextCol + col) < gameBoard[0].length) {
+        while ((nextCol + col) < gameBoard[row].length) {
             gameBoard[row][col + nextCol]++;
-            if ((col + nextCol) < gameBoard[0].length) {
+            if ((row + nextCol) < gameBoard.length) {
                 gameBoard[row + nextCol][col + nextCol]++;
             }
-            if ((col - nextCol) >= 0) {
+            if ((row - nextCol) >= 0) {
                 gameBoard[row - nextCol][col + nextCol]++;
             }
             nextCol++;
@@ -52,23 +52,25 @@ public class Board {
     }
 
     public boolean solve() {
-	for ( int colIndex = 0; colIndex > gameBoard[0].length; colIndex++ ) {
-	    solveH(0,colIndex);
-	}
-	return false;
+	return solveH(0);
     }
 
-    private boolean solveH(int row, int col) {
-	int nextRow;
-	if ( row >= gameBoard.length) {
-	    return false;
-	} else if ( addQueen(row,col) ) {
+    private boolean solveH(int col) {
+	if(col>=gameBoard.length){
+	    printBoard();
 	    return true;
-	} else {
-	    nextRow = row + 1;
-	    removeQueen(row,col);
-	    return solveH(nextRow,col);
 	}
+	for(int row = 0; row < gameBoard.length; row++){
+	    printBoard();
+	    if (addQueen(row,col)){
+		if (solveH(col+1)){
+		    return true;
+		}else{
+		    removeQueen(row,col);
+		}
+	    }
+		}
+	return false;
     }
 
     public void printBoard() {
@@ -88,8 +90,7 @@ public class Board {
 	
 	Board b1 = new Board(4);
 
-	b1.printBoard();
-	b1.solve();
-      	b1.printBoard();
+	System.out.println(b1.solve());
+
     }
 }
