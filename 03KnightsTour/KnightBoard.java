@@ -4,6 +4,7 @@ public class KnightBoard {
     public int[][] board;
     public int boardSize;
     public int border = 2;
+    public int knights = 0;
 
     public KnightBoard(int n) {
 	boardSize = n;
@@ -31,6 +32,34 @@ public class KnightBoard {
 
 
     public boolean solve() {
+	for (int i = 0; i < boardSize + border; i++) {
+	    if (solveH(border+i,border)) {
+		return true;
+	    }
+	}
+	return false;
+    }
+
+
+    private boolean solveH(int row, int col) {
+	knights++;
+	if (knights > boardSize * boardSize) {
+	    return true;
+	} else if (board[row][col] != 0) {
+	    knights--;
+	    return false;
+	} else {
+	    board[row][col] = knights;
+	    solveH(row - 1 , col + 2);
+	    solveH(row - 1 , col - 2);
+	    solveH(row + 1 , col + 2);
+	    solveH(row + 1 , col - 2);
+	    solveH(row + 2 , col + 1);
+	    solveH(row + 2 , col - 1);
+	    solveH(row - 2 , col + 1);
+	    solveH(row - 2 , col - 1);
+
+	}
 	return false;
     }
 
@@ -69,8 +98,8 @@ public class KnightBoard {
     
     public static void main(String[] args) {
 	
-	KnightBoard k = new KnightBoard(8);
-
+	KnightBoard k = new KnightBoard(5);
+        System.out.println(k.solve());
 	k.printSolution();
 
     } 
