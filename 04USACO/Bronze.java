@@ -141,7 +141,6 @@ public class Bronze {
     public static void main(String[] args) {
 	readInputFile("makelake.in");
 	stomp();
-	lakeVolume();
 	System.out.println("" + lakeVolume() + ", 7, Zeng, Anthony");        
     }
 
