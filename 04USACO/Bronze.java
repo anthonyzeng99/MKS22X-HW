@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.io.File;
-import java.io.FileNotFoundException;;
 
 public class Bronze {
 
@@ -8,12 +7,10 @@ public class Bronze {
     private static int[][] instructions;
     private static int elevation;
     
-
     private static void readInputFile(String inputFile) {
 	int rows;
 	int cols;
 	int numInstructions;
-	int currentLine = 0;
 
 	try {
 	
