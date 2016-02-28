@@ -50,14 +50,19 @@ public class KnightBoard {
 	    return false;
 	} else {
 	    board[row][col] = knights;
-	    solveH(row - 1 , col + 2);
-	    solveH(row - 1 , col - 2);
-	    solveH(row + 1 , col + 2);
-	    solveH(row + 1 , col - 2);
-	    solveH(row + 2 , col + 1);
-	    solveH(row + 2 , col - 1);
-	    solveH(row - 2 , col + 1);
-	    solveH(row - 2 , col - 1);
+	    if ( solveH(row - 1 , col + 2) ||
+		 solveH(row - 1 , col - 2) ||
+		 solveH(row + 1 , col + 2) ||
+		 solveH(row + 1 , col - 2) ||
+		 solveH(row + 2 , col + 1) ||
+		 solveH(row + 2 , col - 1) ||
+		 solveH(row - 2 , col + 1) ||
+		 solveH(row - 2 , col - 1)) {
+		return true;
+	    } else {
+		board[row][col] = 0;
+		knights--;
+	    }
 
 	}
 	return false;
@@ -98,7 +103,7 @@ public class KnightBoard {
     
     public static void main(String[] args) {
 	
-	KnightBoard k = new KnightBoard(5);
+	KnightBoard k = new KnightBoard(6);
         System.out.println(k.solve());
 	k.printSolution();
 
