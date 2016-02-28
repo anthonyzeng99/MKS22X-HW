@@ -1,13 +1,13 @@
-import java.util.Scanner;
 import java.io.File;
+import java.util.Scanner;
 
 public class Maze{
 
     private char[][]maze;
     private int startx,starty;
     private boolean animate;
-    public Scanner scan;
-    public File file;
+    private Scanner scan;
+    private File file;
 
     /*Constructor loads a maze text file.
       1. The file contains a rectangular ascii maze, made with the following 4 characters:
@@ -20,43 +20,52 @@ public class Maze{
 
       3. When the file is not found, print an error and exit the program.
     */
-    public Maze(String filename, boolean ani){
-	try {
-	    file = new File(filename);
-	    scan = new Scanner(file);
-	    dimensionMaze();
-	} catch (Exception e) {
-	    return;
-	}
+    public Maze(String filename, boolean ani) {
+        try {
+            file = new File(filename);
+            scan = new Scanner(file);
+            dimensionMaze();
+            scan = new Scanner(file);
+            storeMaze();
+        } catch (Exception e) {
+            return;
+        }
     }
 
     //Instantiates 2D maze array with dimensions of maze
     public void dimensionMaze() {
-	int rows = 1;
-	int cols = 0;
-	
-	String firstLine = scan.nextLine();
-	cols = firstLine.length();
 
-	while(scan.hasNextLine()) {
-	    rows++;
-	    scan.nextLine();
-	}
+        int rows = 1;
+        int cols = 0;
 
-	System.out.println(rows);
-	System.out.println(cols);
-	
-	maze = new char[rows][cols];
-	scan.reset();
+        String firstLine = scan.nextLine();
+        cols = firstLine.length();
+
+        while (scan.hasNextLine()) {
+            rows++;
+            scan.nextLine();
+        }
+
+        maze = new char[rows][cols];
+
     }
 
     // Stores contents of file into maze array;
     public void storeMaze() {
-	Scanner line;
-	while (scan.hasNextLine()) {
-	    line = new Scanner(scan.nextLine());
-	}
-	
+
+        String line;
+        int row = 0;
+
+        while (scan.hasNextLine()) {
+            line = scan.nextLine();
+            System.out.println(line);
+            for (int col = 0; col < maze[row].length; col++) {
+                maze[row][col] = line.charAt(0);
+                line = line.substring(0, line.length());
+            }
+            row++;
+        }
+
     }
 
 
@@ -97,6 +106,20 @@ public class Maze{
 
         //COMPLETE SOLVE
         return false; //so it compiles
+    }
+
+    public void printMaze() {
+
+        for ( int row = 0; row < maze.length; row++ ) {
+            System.out.println();
+            for ( int col = 0; col < maze[row].length; col++ ) {
+                char mazeValue = maze[row][col];
+                System.out.print(" " + mazeValue);
+            }
+        }
+
+        System.out.println();
+        System.out.println();
     }
 
 
@@ -151,7 +174,7 @@ public class Maze{
 
     public static void main(String[] args) {
 	Maze m = new Maze("data1.dat", false);
-	
+	m.printMaze();
     }
 
 }
