@@ -28,7 +28,8 @@ public class Maze{
             scan = new Scanner(file);
             storeMaze();
         } catch (Exception e) {
-            return;
+	    System.out.println("File Not Found");
+	    return;
         }
     }
 
@@ -58,10 +59,13 @@ public class Maze{
 
         while (scan.hasNextLine()) {
             line = scan.nextLine();
-            System.out.println(line);
             for (int col = 0; col < maze[row].length; col++) {
-                maze[row][col] = line.charAt(0);
-                line = line.substring(0, line.length());
+                if (line.charAt(0) == 'S') {
+		    startx = row;
+		    starty = col;
+		}
+		maze[row][col] = line.charAt(0);
+                line = line.substring(1, line.length());
             }
             row++;
         }
@@ -103,7 +107,21 @@ public class Maze{
             System.out.println(this);
             wait(20);
         }
+	if (maze[x][y] == '#' || maze[x][y] == '.' || maze[x][y] == '@') {
+	    return false;
+	} else if(maze[x][y] == 'E') {
+	    return true;
+	} else {
+	    maze[x][y] = '@';
+	    if ( solve(x , y - 1) ||
+		 solve(x - 1 , y) ||
+		 solve(x + 1 , y) ||
+		 solve(x , y + 1) ) {
+		return true;
+	    }
 
+	}
+	maze[x][y] = '.';
         //COMPLETE SOLVE
         return false; //so it compiles
     }
@@ -173,7 +191,9 @@ public class Maze{
     }
 
     public static void main(String[] args) {
-	Maze m = new Maze("data1.dat", false);
+	Maze m = new Maze("data3.dat", true);
+	m.printMaze();
+	System.out.println(m.solve());
 	m.printMaze();
     }
 
