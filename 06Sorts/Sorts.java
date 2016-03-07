@@ -2,6 +2,8 @@ import java.util.Arrays;
 
 public class Sorts {
 
+    public static int[] data;
+
     public static void printArray(int[] data) {
         String output = "";
         for (int i = 0; i < data.length; i++) {
@@ -12,6 +14,16 @@ public class Sorts {
             }
         }
         System.out.println(output + "]");
+    }
+
+    public static boolean isSorted(int[] data) {
+        for (int i = 1; i < data.length; i++) {
+            if (data[i] < data[i - 1]) {
+                return false;
+            }
+        }
+        return true;
+
     }
 
 
@@ -68,18 +80,29 @@ public class Sorts {
     }
 
     public static void mergeSort(int[] data) {
-        mergeSortH(0, data.length);
+        mergeSortH(data, 0, data.length);
     }
 
-    public static void mergeSortH(int start, int end) {
-        int midpoint = (end - start) / 2;
-        System.out.println(start);
-        System.out.println(end);
+    public static void mergeSortH(int[] data, int start, int end) {
+        int midpoint = end - ((end - start) / 2);
         if (end - start > 1 ) {
-            mergeSortH(start, midpoint);
-            mergeSortH(midpoint,end);
+            mergeSortH(data, start, midpoint);
+            mergeSortH(data, midpoint,end);
         }
+            int[] a = Arrays.copyOfRange(data, start, midpoint);
+            int[] b = Arrays.copyOfRange(data, midpoint, end);
+
+            int[] merged = merge(a, b);
+            int dataIndex = start;
+
+
+            for (int i = 0; i < merged.length; i++) {
+                data[dataIndex] = merged[i];
+                dataIndex++;
+            }
+
     }
+
 
     public static int[] merge(int[] a, int[] b) {
         int[] resultArray = new int[a.length + b.length];
@@ -115,23 +138,29 @@ public class Sorts {
         }
 
         return resultArray;
+
     }
+
 
     public static void main(String[] args) {
         int[] a1 = {8, 6, 7, 5, 3, 0, 9, 1};
-        Sorts.printArray(a1);
-        Sorts.insertionSort(a1);
-        Sorts.printArray(a1);
+        //Sorts.printArray(a1);
+        //Sorts.insertionSort(a1);
+        //Sorts.printArray(a1);
 
         int[] a2 = {8, 6, 7, 5, 3, 0, 9, 1};
-        Sorts.printArray(a2);
-        Sorts.selectionSort(a2);
-        Sorts.printArray(a2);
+        //Sorts.printArray(a2);
+        //Sorts.selectionSort(a2);
+        //Sorts.printArray(a2);
 
         int[] m1 = {11, 19, 27, 52, 78, 423};
         int[] m2 = {5, 8, 13, 34, 99, 112, 523};
 
-        mergeSort(a1);
+
+        data = new int[100000];
+        fillRandom(data);
+        mergeSort(data);
+        System.out.println(isSorted(data));
 
     }
 
