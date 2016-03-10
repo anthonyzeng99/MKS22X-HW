@@ -5,49 +5,89 @@ public class Quick {
     public static int[] data;
 
     private static int partition(int[] data, int left, int right) {
+        int index = (int)(Math.random() * (right - left + 1)) + left;
 
-        Random r = new Random();
-        int randIndex = r.nextInt(data.length);
-        int randNum = data[randIndex];
-        System.out.println(randNum);
-        int temp;
+        int start = left + 1;
+        int end = right;
 
-        data[randIndex] = data[data.length - 1];
-        data[data.length - 1] = randNum;
+        swap(data, index, left);
 
-        while (left != right) {
+        while (start < end) {
 
-            if (data[left] < randNum) {
-                left++;
-            } else if (data[right] > randNum) {
-                right--;
+            if (data[start] > data[left]) {
+                swap(data, start, end);
+                end--;
             } else {
-                temp = data[right];
-                data[right] = data[left];
-                data[left] = temp;
-                left++;
-                right--;
+                start++;
             }
-            printArray(data);
+
         }
 
-        temp = data[randIndex];
-        data[randIndex] = randNum;
-        data[data.length - 1] = temp;
-        printArray(data);
+        if (data[start] > data[left]) {
+            swap(data, left, start - 1);
+            return start - 1;
+        } else {
+            swap(data, left, start);
+        }
 
-        return randIndex;
+        return start;
+    }
+
+    private static void swap(int[] data, int a, int b) {
+        int temp = data[a];
+        data[a] = data[b];
+        data[b] = temp;
+    }
+
+    public static int quickSelect(int[] data, int k) {
+
+        return quickSelect(data, k - 1, 0, data.length - 1);
+    }
+
+    private static int quickSelect(int[] data, int k, int left, int right) {
+        int index =  partition(data, left, right);
+
+        if (index == k) {
+            return data[index];
+        } else if (index > k) {
+            return quickSelect(data, k, left, index - 1);
+        } else if (index < k) {
+            return quickSelect(data, k, index + 1, right);
+        }
+
+        return 0;
+
+    }
+
+    public static void quickSort(int[] data) {
+        quickSort(data, 0, data.length - 1);
+    }
+
+    private static void quickSort(int[] data, int left, int right) {
+        if (left < right) {
+            int index = partition(data, left, right);
+            quickSort(data, left, index - 1);
+            quickSort(data, index + 1, right);
+        }
+    }
+
+    public static String name() {
+        return ("7,Zeng,Anthony");
     }
 
     public static void printArray(int[] data) {
         String output = "";
+
         for (int i = 0; i < data.length; i++) {
+
             if (i == 0) {
                 output += "[" + data[i] + ",";
             } else {
                 output += data[i] + ",";
             }
+
         }
+
         System.out.println(output + "]");
     }
 
@@ -65,13 +105,16 @@ public class Quick {
         for (int i = 0; i < data.length; i++) {
             data[i] = (int) (Math.random() * Integer.MAX_VALUE);
         }
+
     }
 
 
     public static void main(String[] args) {
-
-        int[] d1 = {1, 7 , 4, 6, 2 ,5, 19, 86, 11};
-        partition(d1, 0, d1.length - 2);
+        int[] d1 = {1, 7 , 4, 6, 2 , 3, 19, 86};
+        printArray(d1);
+        quickSort(d1);
+        printArray(d1);
+        ;
 
     }
 
