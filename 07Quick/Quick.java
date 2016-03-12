@@ -32,8 +32,43 @@ public class Quick {
 
         return start;
     }
+    
+    private static int partitionNew(int[] data, int left, int right) {
+	int index = (int)(Math.random() * (right - left + 1)) + left;
+	int pivot = data[index];
+        int dataIndex = left;
+	int[] tempArray = new int[right - left];
+	int start = 0;
+        int end = tempArray.length;
+	
+        while (dataIndex < right) {
+	    
+            if (data[dataIndex] > pivot) {
+                tempArray[end] = data[dataIndex];
+                end--;
+	    } else if (data[dataIndex] < pivot) {
+                tempArray[start] = data[dataIndex];
+		start++;
+            }
+	    printArray(tempArray);
+	    dataIndex++;
+	    
+	}
+	return 0;
+    }
+	/*
+        if (data[start] > data[left]) {
+            swap(data, left, start - 1);
+            return start - 1;
+        } else {
+            swap(data, left, start);
+        }
 
-    private static void swap(int[] data, int a, int b) {
+        return start;
+    }
+	*/
+
+	private static void swap(int[] data, int a, int b) {
         int temp = data[a];
         data[a] = data[b];
         data[b] = temp;
@@ -54,7 +89,7 @@ public class Quick {
         } else if (index < k) {
             return quickSelect(data, k, index + 1, right);
         }
-
+	
         return 0;
 
     }
@@ -108,14 +143,17 @@ public class Quick {
 
     }
 
-
+    
     public static void main(String[] args) {
-        int[] d1 = {1, 7 , 4, 6, 2 , 3, 19, 86};
-        printArray(d1);
-        quickSort(d1);
-        printArray(d1);
-        ;
-
-    }
-
+        int[] d1 = {1, 7, 2, 2, 4, 6, 2 , 3, 2, 13, 19, 86};
+	partitionNew(d1, 0, d1.length);
+	
+	//printArray(d1);
+        //quickSort(d1);
+        //printArray(d1);
+        
+   }
+    
 }
+
+    
