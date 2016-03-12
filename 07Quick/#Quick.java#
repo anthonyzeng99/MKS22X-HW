@@ -36,7 +36,6 @@ public class Quick {
     private static int partitionNew(int[] data, int left, int right) {
 	int index = (int)(Math.random() * (right - left + 1));
 	int pivot = data[index];
-	System.out.println(index);
         int dataIndex = left;
 	int[] tempArray = new int[right - left - 1];
 	int start = 0;
@@ -53,7 +52,6 @@ public class Quick {
             }
 	    printArray(tempArray);
 	    dataIndex++;
-	    
 	}
 	return 0;
     }
