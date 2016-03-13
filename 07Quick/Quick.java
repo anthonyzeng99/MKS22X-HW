@@ -33,12 +33,13 @@ public class Quick {
         return start;
     }
     
-    private static int partitionNew(int[] data, int left, int right) {
-	int index = (int)(Math.random() * (right - left + 1));
+    private static int[] partitionNew(int[] data, int left, int right) {
+	printArray(data);
+	int index = (int)(Math.random() * (right - (left + 1)));
 	int pivot = data[index];
-	System.out.println(index);
+	System.out.println(data[index]);
         int dataIndex = left;
-	int[] tempArray = new int[right - left - 1];
+	int[] tempArray = new int[right - left];
 	int start = 0;
         int end = tempArray.length - 1;
 	
@@ -55,7 +56,22 @@ public class Quick {
 	    dataIndex++;
 	    
 	}
-	return 0;
+
+	for (int i = start; i <= end; i++) {
+	    tempArray[i] = pivot;
+	}
+
+	int tempIndex = 0;
+
+	for (int i = left; i < right; i++) {
+	    data[i] = tempArray[tempIndex];
+	    tempIndex++;
+	}
+
+	printArray(tempArray);
+	printArray(data);
+	return new int[]{start, end};
+
     }
 	/*
         if (data[start] > data[left]) {
@@ -68,10 +84,10 @@ public class Quick {
         return start;
     }
 	*/
-
-	private static void swap(int[] data, int a, int b) {
-        int temp = data[a];
-        data[a] = data[b];
+    
+    private static void swap(int[] data, int a, int b) {
+	int temp = data[a];
+	data[a] = data[b];
         data[b] = temp;
     }
 
@@ -80,9 +96,24 @@ public class Quick {
         return quickSelect(data, k - 1, 0, data.length - 1);
     }
 
-    private static int quickSelect(int[] data, int k, int left, int right) {
+    private static int quickSelectOld(int[] data, int k, int left, int right) {
         int index =  partition(data, left, right);
 
+        if (index == k) {
+            return data[index];
+        } else if (index > k) {
+            return quickSelect(data, k, left, index - 1);
+        } else if (index < k) {
+            return quickSelect(data, k, index + 1, right);
+        }
+	
+        return 0;
+
+    }
+    
+    private static int quickSelect(int[] data, int k, int left, int right) {
+	int[] indices =  partition(data, left, right);
+	
         if (index == k) {
             return data[index];
         } else if (index > k) {
@@ -153,7 +184,7 @@ public class Quick {
         //quickSort(d1);
         //printArray(d1);
         
-   }
+    }
     
 }
 
