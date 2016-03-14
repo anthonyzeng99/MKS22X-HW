@@ -4,7 +4,7 @@ public class Quick {
 
     public static int[] data;
 
-    private static int partition(int[] data, int left, int right) {
+    private static int partitionOld(int[] data, int left, int right) {
         int index = (int)(Math.random() * (right - left + 1)) + left;
 
         int start = left + 1;
@@ -33,7 +33,7 @@ public class Quick {
         return start;
     }
     
-    private static int[] partitionNew(int[] data, int left, int right) {
+    private static int[] partition(int[] data, int left, int right) {
 	printArray(data);
 	int index = (int)(Math.random() * (right - (left + 1)));
 	int pivot = data[index];
@@ -70,6 +70,7 @@ public class Quick {
 
 	printArray(tempArray);
 	printArray(data);
+
 	return new int[]{start, end};
 
     }
@@ -91,13 +92,15 @@ public class Quick {
         data[b] = temp;
     }
 
+    /*
     public static int quickSelect(int[] data, int k) {
 
         return quickSelect(data, k - 1, 0, data.length - 1);
     }
 
+    
     private static int quickSelectOld(int[] data, int k, int left, int right) {
-        int index =  partition(data, left, right);
+        int index =  partitionOld(data, left, right);
 
         if (index == k) {
             return data[index];
@@ -110,6 +113,7 @@ public class Quick {
         return 0;
 
     }
+
     
     private static int quickSelect(int[] data, int k, int left, int right) {
 	int[] indices =  partition(data, left, right);
@@ -125,6 +129,7 @@ public class Quick {
         return 0;
 
     }
+    */
 
     public static void quickSort(int[] data) {
         quickSort(data, 0, data.length - 1);
@@ -132,10 +137,17 @@ public class Quick {
 
     private static void quickSort(int[] data, int left, int right) {
         if (left < right) {
-            int index = partition(data, left, right);
-            quickSort(data, left, index - 1);
-            quickSort(data, index + 1, right);
-        }
+            int[] indices = partition(data, left, right);
+            int startIndex = indices[0];
+	    int endIndex = indices[1];
+	    System.out.println(startIndex);
+	    System.out.println(endIndex);
+	    if (startIndex - 1 > left) {
+		//		quickSort(data, left, startIndex - 1);
+            } else if (endIndex + 1 < right) {
+		//quickSort(data, endIndex + 1, right);
+	    }
+	} 
     }
 
     public static String name() {
@@ -178,7 +190,8 @@ public class Quick {
     
     public static void main(String[] args) {
         int[] d1 = {1, 7, 2, 2, 4, 6, 2 , 3, 2, 13, 19, 86};
-	partitionNew(d1, 0, d1.length);
+	quickSort(d1);
+	//	System.out.println(isSorted(d1));
 	
 	//printArray(d1);
         //quickSort(d1);
