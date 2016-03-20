@@ -47,19 +47,50 @@ public class MyLinkedList {
     }
 
     public int set(int index, int newValue) {
-	return 0;
+	LNode current = head;
+	int previousValue;
+	for (int i = 0; i < index; i++) {
+	    if (current.getNext() != null) {
+		current = current.getNext();
+	    } else {
+		throw new IndexOutOfBoundsException();
+	    }
+	} 
+	previousValue = current.getValue();
+	current.setValue(newValue);
+	return previousValue;
     }
 
     public int size() {
-	return size;
+	LNode current = head;
+	int len = 0;
+	while (current.getNext() != null) {
+	    len++;
+	    current = current.getNext();
+	}
+	return len + 1;
     }
 
     public int remove(int index) {
-	return 0;
+	LNode current = head;
+	int previousValue;
+	for(int i = 0; i < index - 1; i++) {
+	    current = current.getNext();
+	}
+	previousValue = current.getNext().getValue();
+	current.setNext(current.getNext().getNext());
+	return previousValue;
     }
 
     public boolean add(int index, int value) {
-	return false;
+	LNode current = head;
+	LNode newNode = new LNode(value);
+	for(int i = 0; i < index - 1; i++) {
+	    current = current.getNext();
+	}
+	newNode.setNext(current.getNext());
+	current.setNext(newNode);
+	return true;
     }
     
     public boolean add(int value) {
@@ -77,7 +108,20 @@ public class MyLinkedList {
     }
     
     public int indexOf(int value) {
-	return 0;
+	LNode current = head;
+	int index = 0;
+	while (current.getNext() != null) {
+	    if (current.getValue() == value) {
+		return index;
+	    }
+	    current = current.getNext();
+	    index++;
+	}
+	if (current.getValue() == value) {
+	    return index;
+	} 
+	return -1;
+
     }
 
     public String toString() {
@@ -100,6 +144,23 @@ public class MyLinkedList {
 	m.add(-3);
 	m.add(0);
 	System.out.println(m);
+	m.set(1,2);
+	System.out.println(m);
+	System.out.println(m.get(0));
+	System.out.println(m.get(1));
+	m.add(7);
+	m.add(7);
+	m.add(6);
+	System.out.println(m);
+	System.out.println(m.indexOf(6));
+	System.out.println(m.indexOf(8));
+	m.remove(2);
+	System.out.println(m);
+	m.add(3, 23);
+	System.out.println(m);
+	System.out.println(m.size());
+	m.add(42);
+	System.out.println(m.size());
     }
 
 }
