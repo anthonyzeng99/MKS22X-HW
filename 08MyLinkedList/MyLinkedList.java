@@ -1,15 +1,15 @@
-public class MyLinkedList {
+public class MyLinkedList<T> {
 
     private class LNode {
 	
-	private int value;
+	private T value;
 	private LNode next;
 		
-	public LNode(int value) {
+	public LNode(T value) {
 	    this.value = value;
 	}
 	
-	public int getValue() {
+	public T getValue() {
 	    return value;
 	}
 	
@@ -17,8 +17,8 @@ public class MyLinkedList {
 	    return next;
 	}
 	
-	public int setValue(int value) {
-	    int oldValue = value;
+	public T setValue(T value) {
+	    T oldValue = value;
 	    this.value = value;
 	    return oldValue;
 	}
@@ -34,7 +34,7 @@ public class MyLinkedList {
     private LNode head;
     private int size;
     
-    public int get(int index) {
+    public T get(T index) {
 	LNode current = head;
 	for (int i = 0; i < index; i++) {
 	    if (current.getNext() != null) {
@@ -46,9 +46,9 @@ public class MyLinkedList {
 	return current.getValue();
     }
 
-    public int set(int index, int newValue) {
+    public T set(T index, int newValue) {
 	LNode current = head;
-	int previousValue;
+	T previousValue;
 	for (int i = 0; i < index; i++) {
 	    if (current.getNext() != null) {
 		current = current.getNext();
