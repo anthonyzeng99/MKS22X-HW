@@ -173,7 +173,7 @@ public class MyLinkedList<T> {
 	m.remove(3);
 	System.out.println(m);
 	System.out.println(m.get(1));
-	System.out.println(m.indexOf("no"));
+	System.out.println(indexOf("no"));
     }
 
 }
