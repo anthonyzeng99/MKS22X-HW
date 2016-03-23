@@ -32,9 +32,13 @@ public class MyLinkedList<T> {
     }
     
     private LNode head;
+    private LNode tail;
     private int size;
     
     public T get(int index) {
+	if (index < 0 || index > size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode current = head;
 	for (int i = 0; i < index; i++) {
 	    if (current.getNext() != null) {
@@ -47,6 +51,9 @@ public class MyLinkedList<T> {
     }
 
     public T set(int index, T newValue) {
+	if (index < 0 || index > size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode current = head;
 	T previousValue;
 	for (int i = 0; i < index; i++) {
@@ -72,17 +79,24 @@ public class MyLinkedList<T> {
     }
 
     public T remove(int index) {
+	if (index < 0 || index > size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode current = head;
 	T previousValue;
 	for(int i = 0; i < index - 1; i++) {
-	    current = current.getNext();
+		current = current.getNext();
 	}
 	previousValue = current.getNext().getValue();
 	current.setNext(current.getNext().getNext());
+	size--;
 	return previousValue;
     }
 
-    public boolean add(int index, T value) {
+    public boolean add(int index, T value) {	
+	if (index < 0 || index > size) {
+	    throw new IndexOutOfBoundsException();
+	}
 	LNode current = head;
 	LNode newNode = new LNode(value);
 	for(int i = 0; i < index - 1; i++) {
@@ -90,6 +104,12 @@ public class MyLinkedList<T> {
 	}
 	newNode.setNext(current.getNext());
 	current.setNext(newNode);
+	if (index == 0) {
+	    head = newNode;
+	} else if (index == size) {
+	    tail = newNode;
+	}
+	size++;
 	return true;
     }
     
@@ -101,7 +121,9 @@ public class MyLinkedList<T> {
 	    while(p.getNext()!=null){
 		p = p.getNext();
 	    }
-	    p.setNext(new LNode(value));
+	    LNode newNode = new LNode(value);
+	    tail = newNode;
+	    p.setNext(newNode);
 	}
 	size+=1;
 	return true;
@@ -124,7 +146,7 @@ public class MyLinkedList<T> {
 
     }
 
-    public String toString() {
+    public String toString(boolean bool) {
 	String ans = "[";
 	LNode p = head;
 	while(p != null){
@@ -174,6 +196,5 @@ public class MyLinkedList<T> {
 	System.out.println(m);
 	System.out.println(m.get(1));
 	System.out.println(m.indexOf("no"));
-    }
-
+    }   
 }
