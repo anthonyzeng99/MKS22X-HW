@@ -1,4 +1,26 @@
-public class MyLinkedList<T> {
+import java.util.*;
+
+public class MyLinkedList<T> implements Iterable<T>{
+
+    public Iterator<T> iterator() {
+	return new X();
+    }
+
+    public class X implements Iterator<T> {
+
+	public boolean hasNext() {
+	    return true;
+	}
+
+	public T next() {
+	    return head.getValue();
+	}
+
+	public void remove() {
+	    throw new UnsupportedOperationException();
+	}
+	
+    }
 
     private class LNode {
 	
