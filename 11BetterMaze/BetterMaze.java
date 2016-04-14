@@ -5,20 +5,25 @@ public class BetterMaze{
 
     private class Node{
 	
-	private int location;
+	private int row, col;
 	private Node prev;
 	
-	public Node(int location, Node prev) {
-	    this.location = location;
+	public Node(int row,int col, Node prev) {
+	    this.row = row;
+	    this.col = col;
 	    this.prev = prev;
 	}
-
-	public int getValue() {
-	    return location;
-	}
-
+	
 	public Node getPrev() {
 	    return prev;
+	}
+
+	public int getRow() {
+	    return row;
+	}
+
+	public int getCol() {
+	    return col;
 	}
 
     }
@@ -30,7 +35,7 @@ public class BetterMaze{
     private boolean  animate;//default to false
 
    /**return a COPY of solution.
-     *This should be : [x1,y1,x2,y2,x3,y3...]
+     *This should be : [r1,c1,r2,c2,r3,c3...]
      *the coordinates of the solution from start to end.
      *Precondition : one of the solveXXX methods has already been 
      * called (solveBFS OR solveDFS OR solveAStar)
@@ -62,10 +67,66 @@ public class BetterMaze{
       Keep going until you find a solution or run out of elements on the frontier.
     **/
     private boolean solve(){  
-        /** IMPLEMENT THIS **/  
+	Node start = new Node(startRow, startCol, null);
+	placesToGo.add(start);
+	
+	while(placesToGo.hasNext()) {
+
+	    Node next = placesToGo.next();
+	    getNeighbors(next);
+
+	    if (isEnd(next)) {
+		return true;
+	    }
+
+	}
+
 	return false;
     }    
      
+    private void getNeighbors(Node node) {
+	int row = node.getRow();
+	int col = node.getCol();
+	Node neighbor;
+
+	if (validSpot(row - 1, col)) {
+	    neighbor = new Node(row - 1, col, node);
+	    placesToGo.add(neighbor);
+	}
+
+	if (validSpot(row + 1, col)) {
+	    neighbor = new Node(row + 1, col, node);
+	    placesToGo.add(neighbor);
+	}
+
+	if (validSpot(row, col - 1)) {
+	    neighbor = new Node(row, col - 1, node);
+	    placesToGo.add(neighbor);
+	}
+
+	if (validSpot(row, col + 1)) {
+	    neighbor = new Node(row, col + 1, node);
+	    placesToGo.add(neighbor);
+	}
+
+    }
+
+    private boolean validSpot(int row, int col) {	
+	if (maze[row][col] == ' ' || maze[row][col] == 'E') {
+	    return true;
+	}
+	return false;
+    }
+
+    private boolean isEnd(Node node) {
+	int row = node.getRow();
+	int col = node.getCol();
+	if (maze[row][col] == 'E') {
+	    return true;
+	}
+	return false;
+    }
+
    /**mutator for the animate variable  **/
     public void setAnimate(boolean animate) {
 	this.animate = animate;
