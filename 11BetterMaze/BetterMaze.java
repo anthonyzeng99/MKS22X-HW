@@ -5,13 +5,14 @@ public class BetterMaze{
 
     private class Node{
 	
-	private int row, col;
+	private int row, col, num;
 	private Node prev;
 	
-	public Node(int row,int col, Node prev) {
+	public Node(int row,int col, Node prev, int num) {
 	    this.row = row;
 	    this.col = col;
 	    this.prev = prev;
+	    this.num = num;
 	}
 	
 	public Node getPrev() {
@@ -26,6 +27,10 @@ public class BetterMaze{
 	    return col;
 	}
 
+	public int getNum() {
+	    return num;
+	}
+
     }
 
     private char[][] maze;
@@ -33,6 +38,7 @@ public class BetterMaze{
     private int      startRow,startCol;
     private Frontier<Node> placesToGo;
     private boolean  animate;//default to false
+    private Node lastNode;
 
    /**return a COPY of solution.
      *This should be : [r1,c1,r2,c2,r3,c3...]
@@ -43,8 +49,17 @@ public class BetterMaze{
      *Postcondition:  the correct solution is in the returned array
     **/
     public int[] solutionCoordinates(){
-        /** IMPLEMENT THIS **/      
-	return new int[1];
+	Node currentNode = lastNode;
+	solution = new int[currentNode.getNum() * 2 + 100];
+	int index = 0;
+	while (currentNode.getPrev() != null) {
+	    solution[index] = currentNode.getRow();
+	    index++;
+	    solution[index] = currentNode.getCol();
+	    index++;
+	    currentNode = currentNode.getPrev();
+	}
+	return solution;
     }    
 
 
@@ -67,17 +82,26 @@ public class BetterMaze{
       Keep going until you find a solution or run out of elements on the frontier.
     **/
     private boolean solve(){  
-	Node start = new Node(startRow, startCol, null);
+	Node start = new Node(startRow, startCol, null, 1);
 	placesToGo.add(start);
 	
 	while(placesToGo.hasNext()) {
 
 	    Node next = placesToGo.next();
-	    getNeighbors(next);
+	    lastNode = next;
+	    int row = next.getRow();
+	    int col = next.getCol();
+
+	    if (maze[row][col] == ' ') {
+		maze[row][col] = '.'; 
+	    }
 
 	    if (isEnd(next)) {
 		return true;
 	    }
+	    
+	    getNeighbors(next);
+
 
 	}
 
@@ -87,25 +111,26 @@ public class BetterMaze{
     private void getNeighbors(Node node) {
 	int row = node.getRow();
 	int col = node.getCol();
+	int order = node.getNum();
 	Node neighbor;
 
 	if (validSpot(row - 1, col)) {
-	    neighbor = new Node(row - 1, col, node);
+	    neighbor = new Node(row - 1, col, node, order + 1);
 	    placesToGo.add(neighbor);
 	}
 
 	if (validSpot(row + 1, col)) {
-	    neighbor = new Node(row + 1, col, node);
-	    placesToGo.add(neighbor);
+
+	    neighbor = new Node(row + 1, col, node, order + 1);	  	    placesToGo.add(neighbor);
 	}
 
 	if (validSpot(row, col - 1)) {
-	    neighbor = new Node(row, col - 1, node);
+	    neighbor = new Node(row, col - 1, node, order + 1);
 	    placesToGo.add(neighbor);
 	}
 
 	if (validSpot(row, col + 1)) {
-	    neighbor = new Node(row, col + 1, node);
+	    neighbor = new Node(row, col + 1, node, order + 1);
 	    placesToGo.add(neighbor);
 	}
 
