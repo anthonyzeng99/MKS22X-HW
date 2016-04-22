@@ -3,25 +3,72 @@ public class BSTree<T extends Comparable<T>> {
     private class Node {
 	T data;
 	Node left;
-	Node Right;
+	Node right;
 
-	private Node(T data) {
+	public Node(T data) {
 	    this.data = data;
 	}
 
-	private int height() {
+	public void setData(T data) {this.data = data;}
+	public void setLeft(Node left) {this.left = left;}
+	public void setRight(Node right) {this.right = right;}
+
+	public T getData() {return data;}
+	public Node getLeft() {return left;}
+	public Node getRight() {return right;}
+
+	public int height() {
 	    return 0;
 	}
 
-	private void add(T value) {
-
+	public void add(T value) {
+	    add(this,value);
 	}
 
-	private String toString() {
+
+	public void add(Node current, T value) {
+	    boolean added = false;
+	    while ( !added ) {
+		
+		if ( value.compareTo(current.data) < 0 ) {
+		    
+		    if (left == null ) {
+			current.left = new Node(value);
+			added = true;
+			System.out.println("added left");
+			return;
+		    } else { 
+			
+			System.out.println("<");
+			current.add(left,value);
+			
+		    return;
+
+		    }
+		} else if ( value.compareTo(current.data) > 0 ) {
+		    
+		    if (left == null) {
+		    current.right = new Node(value);
+		    added = true;
+		    System.out.println("added right");
+		    return;
+		    } else {
+			current = right;
+			System.out.println(">");
+			current.add(right,value);
+
+			return;
+			
+		    }
+		}	
+	    }
+	}
+
+	public String toString() {
 	    return "";
 	}
 
-	private boolean contains(T value) {
+	public boolean contains(T value) {
 	    return false;
 	}
 
@@ -29,12 +76,44 @@ public class BSTree<T extends Comparable<T>> {
 
     private Node root;
 
-    public void add(T value) {}
+    public BSTree(T data) {
+	root = new Node(data);
+    }
 
-    public String toString() {}
+    public void add(T value) {
+	root.add(value);
+    }
 
-    public boolean contains(T value) {}
+    public String toString() {
+	return root.toString();
+    }
 
-    public int getHeight() {}
+    public boolean contains(T value) {
+	return root.contains(value);
+    }
+
+    public int getHeight() {
+	return root.height();
+    }
+
+    public static void main(String[] args) {
+	BSTree<Integer> tree = new BSTree<Integer>(5);
+	tree.add(6);
+	tree.add(2);
+	tree.add(3);
+	tree.add(12);
+	tree.add(72);
+	tree.add(91);
+	tree.add(32);
+	tree.add(8);
+	tree.add(0);
+	tree.add(38);
+	tree.add(23);
+	tree.add(26);
+	tree.add(13);
+	tree.add(18);
+	tree.add(62);
+	tree.add(85);
+    }
 
 }
