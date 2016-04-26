@@ -22,43 +22,29 @@ public class BSTree<T extends Comparable<T>> {
 	}
 
 	public void add(T value) {
-	    add(this,value);
+	    add(root,value);
 	}
-
 
 	public void add(Node current, T value) {
 	    boolean added = false;
 	    while ( !added ) {
-		
 		if ( value.compareTo(current.data) < 0 ) {
-		    
-		    if (left == null ) {
+		    if (current.left == null ) {
 			current.left = new Node(value);
 			added = true;
 			System.out.println("added left");
-			return;
 		    } else { 
-			
 			System.out.println("<");
-			current.add(left,value);
-			
-		    return;
-
-		    }
+			add(current.left,value);
+		    }		    
 		} else if ( value.compareTo(current.data) > 0 ) {
-		    
-		    if (left == null) {
-		    current.right = new Node(value);
-		    added = true;
-		    System.out.println("added right");
-		    return;
+		    if (current.right == null) {
+			current.right = new Node(value);
+			added = true;
+			System.out.println("added right");
 		    } else {
-			current = right;
 			System.out.println(">");
-			current.add(right,value);
-
-			return;
-			
+			add(current.right,value);
 		    }
 		}	
 	    }
