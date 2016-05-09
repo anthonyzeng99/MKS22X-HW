@@ -52,16 +52,10 @@ public class MyHeap<T extends Comparable<T>> {
 
        if(leftValue == null || rightValue == null) {
 	   if (leftValue == null) {
-	       if (rightValue != null && data[index].compareTo(rightValue) > 0) {
-		   data[index] = data[(index * 2) + 1];
-		   data[(index * 2) + 1] = temp;
-		   pushDown( (index * 2) + 1);
-	       } 
+	       checkRight(rightValue, index);
 	   }else if (rightValue == null) {
 	       if (leftValue != null && data[index].compareTo(leftValue) > 0) {
-		   data[index] = data[index * 2];
-		   data[index * 2] = temp;
-		   pushDown( index * 2);
+		   checkLeft(leftValue, index);
 	       } 
 	   }
 	   return;
@@ -70,30 +64,34 @@ public class MyHeap<T extends Comparable<T>> {
        int difference = leftValue.compareTo(rightValue);
        
        if (difference < 0) {
-	   
-	   if (leftValue != null && data[index].compareTo(leftValue) > 0) {
-	       data[index] = data[index * 2];
-	       data[index * 2] = temp;
-	       pushDown(index * 2);
-	   } else if (rightValue != null && data[index].compareTo(rightValue) > 0) {
-	       data[index] = data[(index * 2) + 1];
-	   data[(index * 2) + 1] = temp;
-	   pushDown( (index * 2) + 1);
-	   }	   
+	   checkLeft(leftValue, index);
+	   checkRight(rightValue, index);	   
        }
+       checkRight(rightValue, index);
+       checkLeft(leftValue, index);
+       return;
+   }
 
-       if (rightValue != null && data[index].compareTo(rightValue) > 0) {
-	   data[index] = data[(index * 2) + 1];
-	   data[(index * 2) + 1] = temp;
-	   pushDown( (index * 2) + 1);
-
-       } else if (leftValue != null && data[index].compareTo(leftValue) > 0) {
+   //Checks if left child is less and swaps if it is.
+   private void checkLeft(T leftValue, int index) {
+       T temp = data[index];
+       if (leftValue != null && data[index].compareTo(leftValue) > 0) {
 	   data[index] = data[index * 2];
 	   data[index * 2] = temp;
 	   pushDown(index * 2);
        }
-       
-       return;
+   }
+
+   //Checks if right child is less and swaps if it is.
+
+   private void checkRight(T rightValue, int index) {
+       T temp = data[index];
+       if (rightValue != null && data[index].compareTo(rightValue) > 0) {
+	   data[index] = data[(index * 2) + 1];
+	   data[(index * 2) + 1] = temp;
+	   pushDown( (index * 2) + 1);
+	   
+       }
    }
 
    
@@ -110,7 +108,7 @@ public class MyHeap<T extends Comparable<T>> {
    }
 
    private void heapify() {
-       for (int i = 1; i < size + 1/ 2; i++) {
+       for (int i = size / 2; i > 0; i--) {
 	   pushDown(i);
        }
    }
@@ -137,6 +135,10 @@ public class MyHeap<T extends Comparable<T>> {
        data[size + 1] = x;
        size++;
        heapify();
+   }
+
+   public T peek() {
+       return data[1]; 
    }
 
    private void doubleSize() {
